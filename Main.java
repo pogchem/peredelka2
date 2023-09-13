@@ -21,6 +21,10 @@ public class Main {
         romanNumerals.put('I', 1);
         romanNumerals.put('V', 5);
         romanNumerals.put('X', 10);
+        romanNumerals.put('L', 50);
+        romanNumerals.put('C', 100);
+        romanNumerals.put('D', 500);
+        romanNumerals.put('M', 1000);
 
         Map<Integer, String> arabicNumerals = new HashMap<>();
         arabicNumerals.put(1, "I");
@@ -33,6 +37,10 @@ public class Main {
         arabicNumerals.put(8, "VIII");
         arabicNumerals.put(9, "IX");
         arabicNumerals.put(10, "X");
+        arabicNumerals.put(50, "L");
+        arabicNumerals.put(100, "C");
+        arabicNumerals.put(500, "D");
+        arabicNumerals.put(1000, "M");
 
         String[] parts = input.split(" ");
         if (parts.length != 3) {
@@ -51,8 +59,8 @@ public class Main {
                 int num1 = convertRomanToArabic(num1Str, romanNumerals);
                 int num2 = convertRomanToArabic(num2Str, romanNumerals);
 
-                if (num1 < 1 || num1 > 10 || num2 < 1 || num2 > 10) {
-                    throw new IllegalArgumentException("Числа должны быть от 1 до 10 включительно");
+                if (num1 < 1 || num1 > 1000 || num2 < 1 || num2 > 1000) {
+                    throw new IllegalArgumentException("Числа должны быть от 1 до 1000 включительно");
                 }
 
                 int result;
@@ -79,8 +87,8 @@ public class Main {
                 int num1 = Integer.parseInt(num1Str);
                 int num2 = Integer.parseInt(num2Str);
 
-                if (num1 < 1 || num1 > 10 || num2 < 1 || num2 > 10) {
-                    throw new IllegalArgumentException("Числа должны быть от 1 до 10 включительно");
+                if (num1 < 1 || num1 > 1000 || num2 < 1 || num2 > 1000) {
+                    throw new IllegalArgumentException("Числа должны быть от 1 до 1000 включительно");
                 }
 
                 int result;
@@ -133,37 +141,79 @@ public class Main {
     }
 
     private static String convertArabicToRoman(int arabic, Map<Integer, String> arabicNumerals) {
-        if (arabic <= 0) {
-            throw new IllegalArgumentException("Число должно быть больше нуля");
+        if (arabic <= 0 || arabic > 1000) {
+            throw new IllegalArgumentException("Число должно быть от 1 до 1000 включительно");
         }
 
         StringBuilder roman = new StringBuilder();
+
+        while (arabic >= 1000) {
+            roman.append("M");
+            arabic -= 1000;
+        }
+
+        while (arabic >= 900) {
+            roman.append("CM");
+            arabic -= 900;
+        }
+
+        while (arabic >= 500) {
+            roman.append("D");
+            arabic -= 500;
+        }
+
+        while (arabic >= 400) {
+            roman.append("CD");
+            arabic -= 400;
+        }
+
+        while (arabic >= 100) {
+            roman.append("C");
+            arabic -= 100;
+        }
+
+        while (arabic >= 90) {
+            roman.append("XC");
+            arabic -= 90;
+        }
+
+        while (arabic >= 50) {
+            roman.append("L");
+            arabic -= 50;
+        }
+
+        while (arabic >= 40) {
+            roman.append("XL");
+            arabic -= 40;
+        }
 
         while (arabic >= 10) {
             roman.append("X");
             arabic -= 10;
         }
 
-        if (arabic >= 9) {
-            roman.append("IX");
-            arabic -= 9;
-        }
+        {
+            while (arabic >= 9) {
+                roman.append("IX");
+                arabic -= 9;
+            }
 
-        if (arabic >= 5) {
-            roman.append("V");
-            arabic -= 5;
-        }
+            while (arabic >= 5) {
+                roman.append("V");
+                arabic -= 5;
+            }
 
-        if (arabic >= 4) {
-            roman.append("IV");
-            arabic -= 4;
-        }
+            while (arabic >= 4) {
+                roman.append("IV");
+                arabic -= 4;
+            }
 
-        while (arabic >= 1) {
-            roman.append("I");
-            arabic -= 1;
-        }
+            while (arabic >= 1) {
+                roman.append("I");
+                arabic -= 1;
+            }
 
-        return roman.toString();
+            return roman.toString();
+        }
     }
-}
+    }
